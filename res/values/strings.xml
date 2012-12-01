@@ -1,0 +1,23 @@
+<resources>
+
+    <string name="app_name">Slidecaster</string>
+    <string name="menu_settings">Nastavení</string>
+
+    <!-- TITLES -->
+    <string name="title_activity_main">Slidecaster</string>
+
+    <!-- TAG IDs -->
+    <item name="ID_ROOM" type="id"/>
+
+    <!-- OTHER -->
+    <string name="value">[val]</string>
+    <string name="ok">OK</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
+
+    <!-- default strings for exceptions -->
+    <string name="network_exception_message">Při odesílání požadavku došlo k chybě, zkontrolujte své připojení k internetu a zkuste to později.</string>
+    <string name="unknown_exception_message">Došlo k neznámé chybě.</string>
+    <string name="loading">Nahrávám, prosím počkejte&#8230;</string>
+
+</resources>
