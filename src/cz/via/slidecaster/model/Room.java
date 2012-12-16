@@ -1,60 +1,82 @@
 package cz.via.slidecaster.model;
 
-public class Room {
+import java.io.Serializable;
 
-	String created_at;
-	String id;
-	String name;
-	String password;
-	String photo_id;
-	String updated_at;
+public class Room implements Serializable {
 
-	public String getCreated_at() {
-		return created_at;
-	}
+    String created_at;
+    String id;
+    String name;
+    String password;
+    String photo_id;
+    String updated_at;
+    private int imageNumber;
 
-	public void setCreated_at(String created_at) {
-		this.created_at = created_at;
-	}
+    public Room() {
+        imageNumber = 0;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getCreated_at() {
+        return created_at;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getPhoto_id() {
-		return photo_id;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPhoto_id(String photo_id) {
-		this.photo_id = photo_id;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getUpdated_at() {
-		return updated_at;
-	}
+    public boolean isPasswordProtected() {
+        return !this.getPassword().equals("");
+    }
 
-	public void setUpdated_at(String updated_at) {
-		this.updated_at = updated_at;
-	}
+    public String getPhoto_id() {
+        return photo_id;
+    }
 
+    public void setPhoto_id(String photo_id) {
+        this.photo_id = photo_id;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public void nextImage() {
+        imageNumber++;
+    }
+
+    public void prevImage() {
+        imageNumber--;
+    }
+
+    public int getImageNumber() {
+        return imageNumber;
+    }
 }
