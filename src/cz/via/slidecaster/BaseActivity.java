@@ -50,5 +50,7 @@ public class BaseActivity extends Activity {
 	public void showMsgDialog(int id) {
 		showMsgDialog(id, false);
 	}
+	
+	// pokus
 
 }
