@@ -3,11 +3,22 @@ package cz.via.slidecaster;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
 public class BaseActivity extends Activity {
+
+	protected MyApp app;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+
+		app = (MyApp) this.getApplication();
+	}
 
 	public void showMsgDialog(String s, boolean alignCenter, final boolean finishOnClick) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -50,7 +61,7 @@ public class BaseActivity extends Activity {
 	public void showMsgDialog(int id) {
 		showMsgDialog(id, false);
 	}
-	
+
 	// pokus
 
 }

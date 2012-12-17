@@ -9,12 +9,18 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.List;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -34,7 +40,7 @@ import cz.via.slidecaster.exception.UnknownException;
  */
 public class WebClient {
 
-	private static DefaultHttpClient client = ThreadedClient.getInstance();
+	protected static DefaultHttpClient client = ThreadedClient.getInstance();
 	protected static Context context;
 
 	private static String execute(HttpUriRequest request, String coding) throws ApplicationException {
@@ -44,7 +50,14 @@ public class WebClient {
 		String data = null;
 
 		try {
-			data = convertStreamToString(client.execute(request).getEntity().getContent(), coding);
+			HttpResponse re = client.execute(request);
+			HttpEntity en = re.getEntity();
+			if (en == null) {
+				data = null;
+			} else {
+				InputStream in = en.getContent();
+				data = convertStreamToString(in, coding);
+			}
 			return data;
 		} catch (IllegalStateException e) {
 			throw new NetworkException(context.getString(R.string.network_exception_message));
@@ -53,6 +66,7 @@ public class WebClient {
 		} catch (IOException e) {
 			throw new NetworkException(context.getString(R.string.network_exception_message));
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new UnknownException(context.getString(R.string.unknown_exception_message));
 		}
 	}
@@ -83,6 +97,18 @@ public class WebClient {
 		return execute(post, coding);
 	}
 
+	public static String sendRequest(String url, String coding, Header[] headers) throws ApplicationException {
+		HttpGet get = new HttpGet(url);
+		get.setHeaders(headers);
+		return execute(get, coding);
+	}
+
+	public static String sendDeleteRequest(String url, String coding, Header[] headers) throws ApplicationException {
+		HttpDelete delete = new HttpDelete(url);
+		delete.setHeaders(headers);
+		return execute(delete, coding);
+	}
+
 	/**
 	 * Sends JSON request
 	 * 
@@ -101,6 +127,70 @@ public class WebClient {
 		} catch (UnsupportedEncodingException e) {
 			throw new ApplicationException(e);
 			// e.printStackTrace();
+		}
+		return execute(post, coding);
+	}
+
+	public static String sendRequest(String url, String coding, String json, Header[] headers) throws ApplicationException {
+		HttpPost post = new HttpPost(url);
+		StringEntity se;
+		try {
+			se = new StringEntity(json);
+			se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+			post.setHeaders(headers);
+			post.setEntity(se);
+			post.setHeader("Content-type", "application/json");
+
+		} catch (UnsupportedEncodingException e) {
+			throw new ApplicationException(e);
+			// e.printStackTrace();
+		}
+		return execute(post, coding);
+	}
+
+	public static String sendPutRequest(String url, String coding, String json, Header[] headers) throws ApplicationException {
+		HttpPut put = new HttpPut(url);
+		String s = put.getMethod();
+		StringEntity se;
+		try {
+			se = new StringEntity(json);
+			se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+			put.setHeaders(headers);
+			put.setEntity(se);
+			put.setHeader("Content-type", "application/json");
+
+		} catch (UnsupportedEncodingException e) {
+			throw new ApplicationException(e);
+			// e.printStackTrace();
+		}
+		return execute(put, coding);
+	}
+
+	public static String sendRequest(String url, String coding, String json) throws ApplicationException {
+		HttpPost post = new HttpPost(url);
+		StringEntity se;
+		try {
+			se = new StringEntity(json);
+			se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+			post.setEntity(se);
+			post.setHeader("Content-type", "application/json");
+
+		} catch (UnsupportedEncodingException e) {
+			throw new ApplicationException(e);
+			// e.printStackTrace();
+		}
+		return execute(post, coding);
+	}
+
+	public static String sendRequest(String url, String coding, List<NameValuePair> params, Header[] headers) throws ApplicationException {
+		HttpPost post = new HttpPost(url);
+		post.setHeaders(headers);
+		try {
+			if (params != null) {
+				post.setEntity(new UrlEncodedFormEntity(params));
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
 		return execute(post, coding);
 	}

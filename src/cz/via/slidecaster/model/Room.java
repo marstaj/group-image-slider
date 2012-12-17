@@ -6,7 +6,8 @@ public class Room implements Serializable {
 
 	int id;
 	String name;
-	boolean has_passwd;
+	boolean password;
+	boolean yours;
 
 	public int getId() {
 		return id;
@@ -24,16 +25,20 @@ public class Room implements Serializable {
 		this.name = name;
 	}
 
-	public boolean isHas_passwd() {
-		return has_passwd;
+	public boolean isPassword() {
+		return password;
 	}
 
-	public void setHas_passwd(boolean has_passwd) {
-		this.has_passwd = has_passwd;
+	public void setPassword(boolean password) {
+		this.password = password;
 	}
 
-	public boolean isPasswordProtected() {
-		return has_passwd;
+	public boolean isYours() {
+		return yours;
+	}
+
+	public void setYours(boolean yours) {
+		this.yours = yours;
 	}
 
 }

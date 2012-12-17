@@ -2,6 +2,7 @@
 
     <string name="app_name">Slidecaster</string>
     <string name="menu_settings">Nastavení</string>
+    <string name="menu_add_room">Přidat místnost</string>
 
     <!-- TITLES -->
     <string name="title_activity_main">Slidecaster</string>
@@ -11,9 +12,19 @@
 
     <!-- OTHER -->
     <string name="value">[val]</string>
-    <string name="ok">OK</string>
+    <string name="ok">Potvrdit</string>
+     <string name="cancel">Zrušit</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
+    <string name="edit">Upravit</string>
+    <string name="remove">Odstranit</string>
+    <string name="fill_forms">Zadejte údaje</string>
+    <string name="fill_name">Jméno místnosti:</string>
+    <string name="fill_pass">Heslo:</string>
+    <string name="fill_name_hint">Jméno místnosti</string>
+    <string name="fill_pass_hint">Heslo</string> 
+    <string name="ask_for_password">Zadejte heslo</string>
+    
 
     <!-- default strings for exceptions -->
     <string name="network_exception_message">Při odesílání požadavku došlo k chybě, zkontrolujte své připojení k internetu a zkuste to později.</string>

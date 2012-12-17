@@ -42,10 +42,10 @@ public class RoomAdapter extends ArrayAdapter<Room> {
 
 		holder.roomName.setText(room.getName());
 
-		if (room.getPassword().equals("")) {
-			holder.roomPass.setVisibility(View.INVISIBLE);
-		} else {
+		if (room.isPassword()) {
 			holder.roomPass.setVisibility(View.VISIBLE);
+		} else {
+			holder.roomPass.setVisibility(View.INVISIBLE);
 		}
 
 		convertView.setTag(R.id.ID_ROOM, room);
