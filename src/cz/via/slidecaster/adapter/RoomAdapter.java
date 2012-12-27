@@ -34,6 +34,7 @@ public class RoomAdapter extends ArrayAdapter<Room> {
 			ViewHolder holder = new ViewHolder();
 			holder.roomName = (TextView) convertView.findViewById(R.id.room_name);
 			holder.roomPass = (ImageView) convertView.findViewById(R.id.room_password);
+			holder.roomMy = (ImageView) convertView.findViewById(R.id.room_my);
 			convertView.setTag(holder);
 		}
 		ViewHolder holder = (ViewHolder) convertView.getTag();
@@ -43,9 +44,15 @@ public class RoomAdapter extends ArrayAdapter<Room> {
 		holder.roomName.setText(room.getName());
 
 		if (room.isPassword()) {
-			holder.roomPass.setVisibility(View.VISIBLE);
+			holder.roomPass.setImageResource(R.drawable.lock);
 		} else {
-			holder.roomPass.setVisibility(View.INVISIBLE);
+			holder.roomPass.setImageResource(R.drawable.transparent);
+		}
+		
+		if (room.isYours()) {
+			holder.roomMy.setImageResource(R.drawable.star);
+		} else {
+			holder.roomMy.setImageResource(R.drawable.transparent);
 		}
 
 		convertView.setTag(R.id.ID_ROOM, room);
@@ -56,5 +63,6 @@ public class RoomAdapter extends ArrayAdapter<Room> {
 	static class ViewHolder {
 		TextView roomName;
 		ImageView roomPass;
+		ImageView roomMy;
 	}
 }

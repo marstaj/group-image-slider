@@ -150,7 +150,6 @@ public class WebClient {
 
 	public static String sendPutRequest(String url, String coding, String json, Header[] headers) throws ApplicationException {
 		HttpPut put = new HttpPut(url);
-		String s = put.getMethod();
 		StringEntity se;
 		try {
 			se = new StringEntity(json);
@@ -163,6 +162,13 @@ public class WebClient {
 			throw new ApplicationException(e);
 			// e.printStackTrace();
 		}
+		return execute(put, coding);
+	}
+	
+	public static String sendPutRequest(String url, String coding, Header[] headers) throws ApplicationException {
+		HttpPut put = new HttpPut(url);
+		put.setHeaders(headers);
+		put.setHeader("Content-type", "application/json");
 		return execute(put, coding);
 	}
 

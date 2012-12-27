@@ -3,7 +3,7 @@ package cz.via.slidecaster.net;
 import java.util.List;
 
 import cz.via.slidecaster.exception.ApplicationException;
-import cz.via.slidecaster.model.Image;
+import cz.via.slidecaster.model.Photo;
 import cz.via.slidecaster.model.Room;
 
 public interface ServerAPI {
@@ -11,7 +11,7 @@ public interface ServerAPI {
 
 	public void setPassword(String password);
 
-	public Image getActualImage(Integer roomID);
+	public Photo getActualImage(Integer roomID);
 
 	public Integer getActualImageID(Integer roomID);
 
@@ -21,12 +21,12 @@ public interface ServerAPI {
 
 	public void deleteRoom(Room toDelete);
 
-	public Image getActualImage();
+	public Photo getActualImage();
 
-	public void addImage(Image toAdd);
+	public void addImage(Photo toAdd);
 
-	public void updateImage(Image toEdit);
+	public void updateImage(Photo toEdit);
 
-	public void deleteImage(Image toDelete);
+	public void deleteImage(Photo toDelete);
 
 }

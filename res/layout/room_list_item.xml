@@ -21,11 +21,19 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/room_my"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/star" />
+
+        <ImageView
             android:id="@+id/room_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/lock" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -3,6 +3,8 @@
     <string name="app_name">Slidecaster</string>
     <string name="menu_settings">Nastavení</string>
     <string name="menu_add_room">Přidat místnost</string>
+        <string name="menu_add_photo">Přidat fotografii</string>
+     <string name="menu_refresh">Obnovit</string>
 
     <!-- TITLES -->
     <string name="title_activity_main">Slidecaster</string>

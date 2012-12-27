@@ -1,6 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/menu_refresh"
+        android:icon="@drawable/refresh"
+        android:orderInCategory="98"
+        android:showAsAction="ifRoom"
+        android:title="menu_refresh"/>
+    
+    <item
         android:id="@+id/menu_add_room"
         android:icon="@drawable/add"
         android:orderInCategory="99"

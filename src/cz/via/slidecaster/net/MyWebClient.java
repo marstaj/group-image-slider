@@ -10,9 +10,13 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.message.BasicHeader;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import cz.via.slidecaster.MyApp;
 import cz.via.slidecaster.exception.ApplicationException;
+import cz.via.slidecaster.model.Photo;
+import cz.via.slidecaster.model.PhotoAdd;
 import cz.via.slidecaster.model.Room;
 import cz.via.slidecaster.model.RoomAdd;
 import cz.via.slidecaster.model.RoomAddWithPass;
@@ -23,7 +27,7 @@ public class MyWebClient extends WebClient {
 
 	private static MyWebClient instance;
 
-	final private String URL_BASE = "http://malis.sh.cvut.cz:8080/VIAserver/resources/";
+	final private String URL_BASE = "http://if.sh.cvut.cz:8090/VIAserver/resources/";
 
 	/**
 	 * Method returns instance of MyWebClient.
@@ -66,7 +70,7 @@ public class MyWebClient extends WebClient {
 	// ------------------------------------------ REQUESTS --------------------------------------
 
 	public List<Room> getRooms(String id) throws ApplicationException {
-		String json = sendRequest(URL_BASE + "rooms/id", "UTF-8", getHeaders());
+		String json = sendRequest(URL_BASE + "rooms/" + id, "UTF-8", getHeaders());
 		// Room room = gson.fromJson(t, Room.class); Example how to only get one object out of json
 		Gson gson = new Gson();
 		Type collectionType = new TypeToken<List<Room>>() {
@@ -80,14 +84,13 @@ public class MyWebClient extends WebClient {
 		if (pass != null && !pass.equals("")) {
 			RoomAddWithPass r = new RoomAddWithPass();
 			r.setName(name);
-			r.setPassword(pass);
+			r.setPassword(MyApp.getsaltedHash(pass));
 			sendRequest(URL_BASE + "rooms/" + id, "UTF-8", gson.toJson(r), getHeaders());
 		} else {
 			RoomAdd r = new RoomAdd();
 			r.setName(name);
 			sendRequest(URL_BASE + "rooms/" + id, "UTF-8", gson.toJson(r), getHeaders());
 		}
-
 	}
 
 	public void deleteRoom(String id, Room room) throws ApplicationException {
@@ -101,29 +104,24 @@ public class MyWebClient extends WebClient {
 
 	public void editRoom(String id, Room room, String name, String pass) throws ApplicationException {
 		Gson gson = new Gson();
-		String html = null;
 		if (pass != null && !pass.equals("")) {
 			RoomEditWithPass r = new RoomEditWithPass();
 			r.setId(room.getId());
 			r.setName(name);
-			r.setPassword(pass);
-			html = sendPutRequest(URL_BASE + "rooms/" + id, "UTF-8", gson.toJson(r), getHeaders());
+			r.setPassword(MyApp.getsaltedHash(pass));
+			sendPutRequest(URL_BASE + "rooms/" + id, "UTF-8", gson.toJson(r), getHeaders());
 		} else {
 			RoomEdit r = new RoomEdit();
 			r.setId(room.getId());
 			r.setName(name);
-			html = sendPutRequest(URL_BASE + "rooms/" + id, "UTF-8", gson.toJson(r), getHeaders());
+			sendPutRequest(URL_BASE + "rooms/" + id, "UTF-8", gson.toJson(r), getHeaders());
 		}
-		if (html != null)
-			System.out.print(html);
-		else
-			System.out.print("null null null null");
 	}
 
 	public Room getRoom(String id, Room room, String pass) throws ApplicationException {
 		String json;
 		if (pass != null) {
-			json = sendRequest(URL_BASE + "rooms/" + id + "/" + room.getId() + "/" + pass, "UTF-8", getHeaders());
+			json = sendRequest(URL_BASE + "rooms/" + id + "/" + room.getId() + "/" + MyApp.getsaltedHash(pass), "UTF-8", getHeaders());
 		} else {
 			json = sendRequest(URL_BASE + "rooms/" + id + "/" + room.getId(), "UTF-8", getHeaders());
 		}
@@ -131,5 +129,53 @@ public class MyWebClient extends WebClient {
 		Type collectionType = new TypeToken<Room>() {
 		}.getType();
 		return gson.fromJson(json, collectionType);
+	}
+
+	public Photo getActivePhotoInRoom(String id, Room room, String pass) throws ApplicationException {
+		String json;
+		if (pass != null) {
+			json = sendRequest(URL_BASE + "rooms/" + id + "/" + room.getId() + "/" + MyApp.getsaltedHash(pass) + "/photo", "UTF-8", getHeaders());
+		} else {
+			json = sendRequest(URL_BASE + "rooms/" + id + "/" + room.getId() + "/photo", "UTF-8", getHeaders());
+		}
+		Gson gson = new Gson();
+		Type collectionType = new TypeToken<Photo>() {
+		}.getType();
+		return gson.fromJson(json, collectionType);
+	}
+
+	public List<Photo> getPhotosInRoom(String id, Room room, String pass) throws ApplicationException {
+		String json;
+		if (pass != null) {
+			json = sendRequest(URL_BASE + "rooms/" + id + "/" + room.getId() + "/" + MyApp.getsaltedHash(pass) + "/photos", "UTF-8", getHeaders());
+		} else {
+			json = sendRequest(URL_BASE + "rooms/" + id + "/" + room.getId() + "/photos", "UTF-8", getHeaders());
+		}
+		Gson gson = new Gson();
+
+		List<Photo> list;
+		try {
+			Type collectionType = new TypeToken<List<Photo>>() {
+			}.getType();
+			list = gson.fromJson(json, collectionType);
+		} catch (Exception e) {
+			Type collectionType = new TypeToken<Photo>() {
+			}.getType();
+			Photo p = gson.fromJson(json, collectionType);
+			list = new ArrayList<Photo>();
+			list.add(p);
+		}
+		return list;
+	}
+
+	public void postPhoto(String id, Room room, Photo photo) throws ApplicationException {
+		Gson gson = new Gson();
+		PhotoAdd p = new PhotoAdd();
+		p.setFilename(photo.getFilename());
+		sendRequest(URL_BASE + "rooms/" + id + "/" + room.getId() + "/photo", "UTF-8", gson.toJson(p), getHeaders());
+	}
+
+	public void setPhotoAsActive(String id, Room room, Photo photo) throws ApplicationException {
+		sendPutRequest(URL_BASE + "rooms/" + id + "/" + room.getId() + "/photo/" + photo.getId(), "UTF-8", getHeaders());
 	}
 }

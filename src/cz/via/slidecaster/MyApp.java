@@ -22,12 +22,12 @@ public class MyApp extends Application {
 		hash = getsaltedHash(imei);
 	}
 
-	public String getsaltedHash(String imei) {
+	public static String getsaltedHash(String imei) {
 		String salt = "Random$SaltValue#WithSpecialCharacters12@$@4&#%^$*";
 		return md5(imei + salt);
 	}
 
-	private static String md5(String input) {
+	public static String md5(String input) {
 		String md5 = null;
 
 		if (null == input)
@@ -47,6 +47,7 @@ public class MyApp extends Application {
 
 	public String getDeviceId() {
 		return hash;
+		//return "id";
 	}
 
 }

@@ -67,21 +67,26 @@ public class MainActivity extends BaseActivity {
 				if (object != null && object.getClass().equals(Room.class)) {
 					final Room room = (Room) object;
 
-					Builder builder = new Builder(MainActivity.this);
-					builder.setItems(new CharSequence[] { getText(R.string.edit), getText(R.string.remove) }, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int item) {
-							if (item == 0) { // EDIT
-								editRoomInit(room);
-								return;
+					if (room.isYours()) {
+						Builder builder = new Builder(MainActivity.this);
+						builder.setItems(new CharSequence[] { getText(R.string.edit), getText(R.string.remove) }, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int item) {
+								if (item == 0) { // EDIT
+									editRoomInit(room);
+									return;
+								}
+								if (item == 1) { // DELETE
+									deleteRoom(room);
+									return;
+								}
 							}
-							if (item == 1) { // DELETE
-								deleteRoom(room);
-								return;
-							}
-						}
 
-					});
-					builder.show();
+						});
+						builder.show();
+					} else {
+						// TODO kdyz to neni moje
+					}
+
 				}
 
 				// if (object != null && object.getClass().equals(Room.class)) {
@@ -168,7 +173,7 @@ public class MainActivity extends BaseActivity {
 		listView.onRestoreInstanceState(state);
 
 	}
-	
+
 	private void addRoomInit() {
 		Builder builder = new AlertDialog.Builder(this);
 		builder.setCancelable(false);
@@ -298,7 +303,7 @@ public class MainActivity extends BaseActivity {
 			myIntent.putExtra("pass", pass);
 			MainActivity.this.startActivity(myIntent);
 		}
-		
+
 	}
 
 	private void askForPassword(final Room room) {
@@ -340,6 +345,10 @@ public class MainActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		// Plus button pressed
+		case R.id.menu_refresh: {
+			downloadRooms();
+			break;
+		}
 		case R.id.menu_add_room: {
 			addRoomInit();
 			break;
