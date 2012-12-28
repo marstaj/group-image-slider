@@ -4,10 +4,22 @@ import java.io.Serializable;
 
 public class Room implements Serializable {
 
-	int id;
-	String name;
-	boolean password;
-	boolean yours;
+	/**
+	 * Room ID
+	 */
+	private int id;
+	/**
+	 * Room name
+	 */
+	private String name;
+	/**
+	 * Room passsword
+	 */
+	private boolean password;
+	/**
+	 * Whether this device created the room or not
+	 */
+	private boolean yours;
 
 	public int getId() {
 		return id;

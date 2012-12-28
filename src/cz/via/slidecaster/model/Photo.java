@@ -2,9 +2,18 @@ package cz.via.slidecaster.model;
 
 public class Photo {
 
-	int id;
-	String filename;
-	boolean active;
+	/**
+	 * Photo ID
+	 */
+	private int id;
+	/**
+	 * Photo link for download
+	 */
+	private String filename;
+	/**
+	 * Whether is photo set as active or not
+	 */
+	private boolean active;
 
 	public boolean isActive() {
 		return active;
