@@ -5,6 +5,10 @@
 package cz.via.slidecaster;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import android.content.Intent;
@@ -40,6 +44,7 @@ public class PresentationActivity extends BaseActivity {
 	Handler handler;
 	private int numOfPhoto = 0;
 	private int numOfActivePhoto = 0;
+	private Bitmap actualPhoto;
 
 	Runnable getActivePhoto = new Runnable() {
 		@Override
@@ -114,7 +119,24 @@ public class PresentationActivity extends BaseActivity {
 			@Override
 			public Photo doTask() throws ApplicationException {
 
-				return MyWebClient.getInstance().getActivePhotoInRoom(room, pass);
+				Photo p = MyWebClient.getInstance().getActivePhotoInRoom(room, pass);
+				if (p != null) {
+
+					try {
+						URL url = new URL(p.getFilename());
+						InputStream is = (InputStream) url.getContent();
+						actualPhoto = BitmapFactory.decodeStream(is);
+						is.close();
+					} catch (MalformedURLException e) {
+						return null;
+					} catch (IOException e) {
+						return null;
+					}
+
+				}
+
+				return p;
+
 			}
 
 			@Override
@@ -128,7 +150,7 @@ public class PresentationActivity extends BaseActivity {
 				if (t == null) {
 					Toast.makeText(PresentationActivity.this, "Photo is null", Toast.LENGTH_SHORT).show();
 				} else {
-					Toast.makeText(PresentationActivity.this, "" + t.getFilename() + " - " + t.getId(), Toast.LENGTH_SHORT).show();
+					image.setImageBitmap(actualPhoto);
 				}
 			}
 

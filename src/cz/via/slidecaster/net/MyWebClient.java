@@ -217,7 +217,10 @@ public class MyWebClient extends WebClient {
 		Gson gson = new Gson();
 		Type collectionType = new TypeToken<Photo>() {
 		}.getType();
-		return gson.fromJson(json, collectionType);
+
+		Photo p = gson.fromJson(json, collectionType);
+		p.setFilename(address + ":80" + p.getFilename());
+		return p;
 	}
 
 	/**

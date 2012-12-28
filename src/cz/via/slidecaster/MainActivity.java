@@ -209,7 +209,7 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public List<Room> doTask() throws ApplicationException {
 
-				MyWebClient.getInstance().createRoom(app.getDeviceId(), name);
+				MyWebClient.getInstance().createRoom(name, pass);
 				List<Room> list = MyWebClient.getInstance().getRooms();
 				return list;
 			}
