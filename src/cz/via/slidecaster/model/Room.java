@@ -13,7 +13,7 @@ public class Room implements Serializable {
 	 */
 	private String name;
 	/**
-	 * Room passsword
+	 * Room password
 	 */
 	private boolean password;
 	/**
