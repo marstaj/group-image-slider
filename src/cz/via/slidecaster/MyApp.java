@@ -10,7 +10,7 @@ import android.telephony.TelephonyManager;
 
 public class MyApp extends Application {
 
-	private String hash;
+	public static String hash;
 
 	@Override
 	public void onCreate() {
@@ -45,9 +45,8 @@ public class MyApp extends Application {
 		return md5;
 	}
 
-	public String getDeviceId() {
+	public static String getDeviceId() {
 		return hash;
-		//return "id";
 	}
 
 }

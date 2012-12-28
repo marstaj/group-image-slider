@@ -141,7 +141,7 @@ public class MainActivity extends BaseActivity {
 			public List<Room> doTask() throws ApplicationException {
 
 				// Download roomsList
-				List<Room> list = MyWebClient.getInstance().getRooms(app.getDeviceId());
+				List<Room> list = MyWebClient.getInstance().getRooms();
 				return list;
 			}
 
@@ -209,8 +209,8 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public List<Room> doTask() throws ApplicationException {
 
-				MyWebClient.getInstance().createRoom(app.getDeviceId(), name, pass);
-				List<Room> list = MyWebClient.getInstance().getRooms(app.getDeviceId());
+				MyWebClient.getInstance().createRoom(app.getDeviceId(), name);
+				List<Room> list = MyWebClient.getInstance().getRooms();
 				return list;
 			}
 
@@ -237,8 +237,8 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public List<Room> doTask() throws ApplicationException {
 
-				MyWebClient.getInstance().deleteRoom(app.getDeviceId(), room);
-				List<Room> list = MyWebClient.getInstance().getRooms(app.getDeviceId());
+				MyWebClient.getInstance().deleteRoom(room);
+				List<Room> list = MyWebClient.getInstance().getRooms();
 				return list;
 			}
 
@@ -265,8 +265,8 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public List<Room> doTask() throws ApplicationException {
 
-				MyWebClient.getInstance().editRoom(app.getDeviceId(), room, name, pass);
-				List<Room> list = MyWebClient.getInstance().getRooms(app.getDeviceId());
+				MyWebClient.getInstance().editRoom(room, name, pass);
+				List<Room> list = MyWebClient.getInstance().getRooms();
 				return list;
 			}
 

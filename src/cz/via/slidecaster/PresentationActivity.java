@@ -4,10 +4,17 @@
  */
 package cz.via.slidecaster;
 
+import java.io.File;
 import java.util.List;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,6 +31,7 @@ import cz.via.slidecaster.util.TouchImageView;
  */
 public class PresentationActivity extends BaseActivity {
 
+	private static final int ACTIVITY_SELECT_IMAGE = 0;
 	private Room room;
 	private boolean teacher;
 	private float downX, downY, upX, upY;
@@ -76,7 +84,7 @@ public class PresentationActivity extends BaseActivity {
 			@Override
 			public Room doTask() throws ApplicationException {
 
-				return MyWebClient.getInstance().getRoom(app.getDeviceId(), room, pass);
+				return MyWebClient.getInstance().getRoom(room, pass);
 			}
 
 			@Override
@@ -106,7 +114,7 @@ public class PresentationActivity extends BaseActivity {
 			@Override
 			public Photo doTask() throws ApplicationException {
 
-				return MyWebClient.getInstance().getActivePhotoInRoom(app.getDeviceId(), room, pass);
+				return MyWebClient.getInstance().getActivePhotoInRoom(room, pass);
 			}
 
 			@Override
@@ -145,7 +153,10 @@ public class PresentationActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_add_photo: {
-			addPhoto();
+
+			Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+
 			break;
 		}
 		case R.id.menu_set_active: {
@@ -158,15 +169,38 @@ public class PresentationActivity extends BaseActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void addPhoto() {
+	protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+		switch (requestCode) {
+		case ACTIVITY_SELECT_IMAGE:
+			if (resultCode == RESULT_OK) {
+				Uri selectedImage = imageReturnedIntent.getData();
+				String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+				Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+				cursor.moveToFirst();
+
+				int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+				String filePath = cursor.getString(columnIndex);
+				cursor.close();
+
+				File file = new File(filePath);
+
+				Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
+				image.setImageBitmap(yourSelectedImage);
+				addPhoto(file);
+			}
+		}
+	}
+
+	private void addPhoto(final File file) {
 		new Task<Object>(this) {
 
 			@Override
 			public Object doTask() throws ApplicationException {
 
-				Photo photo = new Photo();
-				photo.setFilename("Fotka " + numOfPhoto);
-				MyWebClient.getInstance().postPhoto(app.getDeviceId(), room, photo);
+				MyWebClient.getInstance().postPhoto(room, file);
 				numOfPhoto++;
 				return null;
 			}
@@ -192,7 +226,7 @@ public class PresentationActivity extends BaseActivity {
 
 			@Override
 			public List<Photo> doTask() throws ApplicationException {
-				list = MyWebClient.getInstance().getPhotosInRoom(app.getDeviceId(), room, pass);
+				list = MyWebClient.getInstance().getPhotosInRoom(room, pass);
 				return list;
 			}
 
@@ -225,7 +259,7 @@ public class PresentationActivity extends BaseActivity {
 				@Override
 				public Object doTask() throws ApplicationException {
 
-					MyWebClient.getInstance().setPhotoAsActive(app.getDeviceId(), room, list.get(numOfActivePhoto));
+					MyWebClient.getInstance().setPhotoAsActive(room, list.get(numOfActivePhoto));
 					numOfActivePhoto++;
 					return null;
 				}
