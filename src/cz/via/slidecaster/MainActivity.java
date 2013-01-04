@@ -112,6 +112,7 @@ public class MainActivity extends BaseActivity {
 
 		// Forms
 		final EditText formName = (EditText) mDialogLayout.findViewById(R.id.EditText_Pwd1);
+                formName.setText(room.getName());
 		final EditText formPass = (EditText) mDialogLayout.findViewById(R.id.EditText_Pwd2);
 
 		builder.setView(mDialogLayout);

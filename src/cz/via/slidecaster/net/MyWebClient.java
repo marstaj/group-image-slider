@@ -181,7 +181,7 @@ public class MyWebClient extends WebClient {
 		} else {
 			json = sendRequest(URL_BASE + "rooms/" + MyApp.getDeviceId() + "/" + room.getId(), "UTF-8", getHeaders());
 		}
-		if (json == null) {
+		if (json == null || json.isEmpty()) {
 			return null;
 		}
 
@@ -210,7 +210,7 @@ public class MyWebClient extends WebClient {
 			json = sendRequest(URL_BASE + "rooms/" + MyApp.getDeviceId() + "/" + room.getId() + "/photo", "UTF-8", getHeaders());
 		}
 
-		if (json == null) {
+		if (json == null || json.isEmpty()) {
 			return null;
 		}
 
