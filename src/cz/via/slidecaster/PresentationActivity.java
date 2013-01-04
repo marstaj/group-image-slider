@@ -133,10 +133,18 @@ public class PresentationActivity extends BaseActivity {
                 if (p != null) {
 
                     try {
-                        URL url = new URL(p.getFilename());
-                        InputStream is = (InputStream) url.getContent();
-                        actualPhoto = BitmapFactory.decodeStream(is);
-                        is.close();
+                        File f = new File(getCacheDir(), String.valueOf(p.getId()));
+                        if (!f.exists()) {
+                            URL url = new URL(p.getFilename());
+                            InputStream is = (InputStream) url.getContent();
+                            actualPhoto = BitmapFactory.decodeStream(is);
+                            is.close();
+
+                            FileOutputStream fos = new FileOutputStream(f.getAbsoluteFile());
+                            actualPhoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.close();
+                        }
+                        actualPhoto = BitmapFactory.decodeFile(f.getAbsolutePath());
                     } catch (MalformedURLException e) {
                         return null;
                     } catch (IOException e) {
