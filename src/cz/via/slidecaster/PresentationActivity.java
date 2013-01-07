@@ -99,14 +99,17 @@ public class PresentationActivity extends BaseActivity {
 
             @Override
             public String getProgressDialogMessage() {
-                // Set message to be displayed while task is running
-                return getString(R.string.loading);
+                if (room.isYours()) {
+                    return getString(R.string.loading);
+                } else {
+                    return null;
+                }
             }
 
             @Override
             public void doAfterTask(Room t) {
                 if (t == null) {
-                    Toast.makeText(PresentationActivity.this, "Pokoj nelze načíst. Špatné heslo ?", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PresentationActivity.this, "Třídu nelze načíst. Špatné heslo ?", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
                     if (room.isYours()) {
@@ -160,7 +163,11 @@ public class PresentationActivity extends BaseActivity {
             @Override
             public String getProgressDialogMessage() {
                 // Set message to be displayed while task is running
-                return getString(R.string.loading);
+                if (room.isYours()) {
+                    return getString(R.string.loading);
+                } else {
+                    return null;
+                }
             }
 
             @Override
