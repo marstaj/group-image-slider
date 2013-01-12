@@ -52,7 +52,8 @@ public class WebClient {
 			HttpResponse re = client.execute(request);
 			HttpEntity en = re.getEntity();
 			int statusCode = re.getStatusLine().getStatusCode();
-			if (statusCode != 200 && statusCode != 204) {
+			System.out.println("Response CODE: " + statusCode);
+			if (statusCode != 200 && statusCode != 204 && statusCode != 500) {
 				return null;
 			} else {
 				if (en == null) {

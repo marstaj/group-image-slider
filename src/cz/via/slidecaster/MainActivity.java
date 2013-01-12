@@ -26,7 +26,6 @@ import cz.via.slidecaster.task.Task;
 public class MainActivity extends BaseActivity {
 
 	private ListView listView;
-	private boolean isTeacher;
 	private Parcelable state;
 
 	@Override
@@ -48,7 +47,7 @@ public class MainActivity extends BaseActivity {
 				if (object != null && object.getClass().equals(Room.class)) {
 					Room room = (Room) object;
 
-					if (room.isPassword()) {// TODO onItemclick
+					if (room.isPassword()) {
 						askForPassword(room);
 					} else {
 						enterRoom(room);
@@ -112,7 +111,7 @@ public class MainActivity extends BaseActivity {
 
 		// Forms
 		final EditText formName = (EditText) mDialogLayout.findViewById(R.id.EditText_Pwd1);
-                formName.setText(room.getName());
+		formName.setText(room.getName());
 		final EditText formPass = (EditText) mDialogLayout.findViewById(R.id.EditText_Pwd2);
 
 		builder.setView(mDialogLayout);
@@ -352,9 +351,6 @@ public class MainActivity extends BaseActivity {
 		}
 		case R.id.menu_add_room: {
 			addRoomInit();
-			break;
-		}
-		case R.id.menu_settings: {
 			break;
 		}
 		}
