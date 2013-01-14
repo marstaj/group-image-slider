@@ -41,6 +41,7 @@ public class WebClient {
 
 	protected static DefaultHttpClient client = ThreadedClient.getInstance();
 	protected static Context context;
+	private static int tryNumber;
 
 	private static String execute(HttpUriRequest request, String coding) throws ApplicationException {
 
@@ -53,16 +54,23 @@ public class WebClient {
 			HttpEntity en = re.getEntity();
 			int statusCode = re.getStatusLine().getStatusCode();
 			System.out.println("Response CODE: " + statusCode);
-			if (statusCode != 200 && statusCode != 204 && statusCode != 500) {
-				return null;
+			if (statusCode == 500 && tryNumber == 0) { // if 500 try one more time
+				tryNumber++;
+				return execute(request, coding);
 			} else {
-				if (en == null) {
-					data = "";
+				if (statusCode != 200 && statusCode != 204) {
+					tryNumber = 0;
+					return null;
 				} else {
-					InputStream in = en.getContent();
-					data = convertStreamToString(in, coding);
+					if (en == null) {
+						data = "";
+					} else {
+						InputStream in = en.getContent();
+						data = convertStreamToString(in, coding);
+					}
+					tryNumber = 0;
+					return data;
 				}
-				return data;
 			}
 		} catch (IllegalStateException e) {
 			throw new NetworkException(context.getString(R.string.network_exception_message));

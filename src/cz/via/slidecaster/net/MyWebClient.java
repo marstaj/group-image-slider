@@ -181,7 +181,7 @@ public class MyWebClient extends WebClient {
 		} else {
 			json = sendRequest(URL_BASE + "rooms/" + MyApp.getDeviceId() + "/" + room.getId(), "UTF-8", getHeaders());
 		}
-		if (json == null || json.isEmpty()) {
+		if (json == null || json.equals("")) {
 			return null;
 		}
 
@@ -210,7 +210,7 @@ public class MyWebClient extends WebClient {
 			json = sendRequest(URL_BASE + "rooms/" + MyApp.getDeviceId() + "/" + room.getId() + "/photo", "UTF-8", getHeaders());
 		}
 
-		if (json == null || json.isEmpty()) {
+		if (json == null || json.equals("")) {
 			return null;
 		}
 
@@ -219,7 +219,7 @@ public class MyWebClient extends WebClient {
 		}.getType();
 
 		Photo p = gson.fromJson(json, collectionType);
-		p.setFilename(address + ":80" + p.getFilename());
+		p.setFilename(address + ":" + port + p.getFilename());
 		return p;
 	}
 
