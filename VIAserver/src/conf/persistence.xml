@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="VIAserverPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>entities.Photo</class>
+    <class>entities.Room</class>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/via" />
+      <property name="javax.persistence.jdbc.user" value="via" />
+      <property name="javax.persistence.jdbc.password" value="via" />
+    </properties>
+  </persistence-unit>
+</persistence>-->
+<!--<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+  <persistence-unit name="VIAserverPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>entities.Photo</class>
+    <class>entities.Room</class>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
+      <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.connection.username" value="via"/>
+      <property name="hibernate.connection.password" value="via"/>
+      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/via"/>
+      <property name="hibernate.max_fetch_depth" value="3"/>
+    </properties>
+  </persistence-unit>
+</persistence>-->
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="VIAserverPU" transaction-type="RESOURCE_LOCAL">
+  <provider>oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider</provider> 
+    <class>entities.Photo</class>
+    <class>entities.Room</class>
+<properties>
+<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/via"/>
+<property name="toplink.jdbc.user" value="via"/>
+<property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+<property name="toplink.jdbc.password" value="via"/>
+</properties>
+</persistence-unit>
+</persistence>
